@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiMenu, FiUser, FiHome, FiTrello, FiInbox, FiUsers, FiBox, FiLogIn, FiUserPlus, FiDollarSign, FiChevronDown, FiChevronRight, FiSettings } from "react-icons/fi";
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import Dashboard from "../pages/Dashboard";
 
 // Hook para detectar se está em tela >= sm
@@ -93,10 +93,10 @@ const Drawer = () => {
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-[#faf6ec] dark:bg-black">
                     <ul className="space-y-2 font-medium">
                         <li>
-                            <a href="#" className="flex items-center p-2 rounded-lg hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">
+                            <Link to="/dashboard" className="flex items-center p-2 rounded-lg hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">
                                 <FiHome className="w-5 h-5" />
                                 <span className="ms-3">Dashboard</span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <button className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">
@@ -109,7 +109,7 @@ const Drawer = () => {
                             {/* Submenu (apenas visual) */}
                             <ul className="ml-8 mt-1 space-y-1">
                                 <li>
-                                    <a href="#" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Cardápio</a>
+                                    <Link to="/products/menu" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Cardápio</Link>
                                 </li>
                             </ul>
                         </li>
@@ -124,21 +124,21 @@ const Drawer = () => {
                             {/* Submenu (apenas visual) */}
                             <ul className="ml-8 mt-1 space-y-1">
                                 <li>
-                                    <a href="#" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Vendas</a>
+                                    <Link to="/cashier/sales" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Vendas</Link>
                                 </li>
                                 <li>
-                                    <a href="#" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Recibos</a>
+                                    <Link to="/cashier/receipts" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Recibos</Link>
                                 </li>
                                 <li>
-                                    <a href="#" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Calculadora</a>
+                                    <Link to="/cashier/calculator" className="block p-2 rounded hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">Calculadora</Link>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#" className="flex items-center p-2 rounded-lg hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">
+                            <Link to="/roles" className="flex items-center p-2 rounded-lg hover:bg-[#fd6e25]/10 dark:hover:bg-[#222]">
                                 <FiUsers className="w-5 h-5" />
                                 <span className="ms-3">Roles</span>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -149,6 +149,8 @@ const Drawer = () => {
                 <div className="p-4 border-2 border-[#fd6e25] border-dashed rounded-lg dark:border-[#222] mt-14">
                     <Routes>
                         <Route path="/dashboard" element={<Dashboard />} />
+                        {/* Adicione outras rotas aqui conforme necessário */}
+                        {/* Exemplo: <Route path="/products/menu" element={<ProductMenuPage />} /> */}
                     </Routes>
                 </div>
             </div>
