@@ -1,7 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FiMenu, FiUser, FiHome, FiTrello, FiInbox, FiUsers, FiBox, FiLogIn, FiUserPlus, FiDollarSign, FiChevronDown, FiChevronRight, FiSettings } from "react-icons/fi";
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from "../pages/Dashboard";
+
+// Hook para detectar se está em tela >= sm
+function useIsDesktop() {
+    // Cria um estado chamado isDesktop, que começa como true se a largura da janela for >= 640px, senão false
+    const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 900);
+
+    useEffect(() => {
+        // Função que será chamada sempre que a janela for redimensionada
+        const handler = () => setIsDesktop(window.innerWidth >= 900);
+
+        // Adiciona o evento de resize para chamar handler sempre que a janela mudar de tamanho
+        window.addEventListener('resize', handler);
+
+        // Função de limpeza: remove o evento quando o componente for desmontado
+        return () => window.removeEventListener('resize', handler);
+    }, []); // O array vazio faz o efeito rodar só uma vez, ao montar o componente
+
+    // Retorna o valor atual de isDesktop (true se >= 640px, false se < 640px)
+    return isDesktop;
+}
 
 const Drawer = () => {
+    const isDesktop = useIsDesktop();
+    const [sidebarOpen, setSidebarOpen] = useState(isDesktop);
+
+    useEffect(() => {
+        setSidebarOpen(isDesktop);
+    }, [isDesktop]);
+
+    // Função para alternar a sidebar
+    const toggleSidebar = () => setSidebarOpen((open) => !open);
+
+    // Define a classe de margem do conteúdo
+    const contentMargin = isDesktop ? (sidebarOpen ? 'ml-64' : '') : '';
+
     return (
         <>
             {/* Navbar fixa no topo */}
@@ -13,13 +48,14 @@ const Drawer = () => {
                             <button
                                 type="button"
                                 className="inline-flex items-center p-2 text-sm text-white rounded-lg hover:bg-[#fd6e25]/80 focus:outline-none focus:ring-2 focus:ring-[#fd6e25] dark:text-white dark:hover:bg-black/80 dark:focus:ring-black"
+                                onClick={toggleSidebar}
                             >
                                 <span className="sr-only">Open sidebar</span>
                                 <FiMenu className="w-6 h-6" />
                             </button>
                         </div>
                         {/* Título centralizado */}
-                        <span className="text-xl font-semibold sm:text-2xl whitespace-nowrap mx-auto">Fast Token</span>
+                        <span className="text-xl font-semibold whitespace-nowrap mx-auto">Fast Token</span>
                         {/* Perfil à direita */}
                         <div className="absolute right-0 flex items-center ms-3">
                             <button type="button" className="flex text-sm bg-[#fd6e25] rounded-full focus:ring-4 focus:ring-[#fd6e25]/30 dark:bg-[#18191a] dark:focus:ring-black/60">
@@ -47,7 +83,13 @@ const Drawer = () => {
             </nav>
 
             {/* Sidebar fixa à esquerda */}
-            <aside className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 border border-r border-[#fd6e25] text-[#1a2021] transition-transform -translate-x-full bg-[#faf6ec] sm:translate-x-0 dark:bg-black dark:border-[#222] dark:text-white" aria-label="Sidebar">
+            <aside
+                className={
+                    "fixed top-0 left-0 z-40 w-64 h-screen pt-20 border border-r border-[#fd6e25] text-[#1a2021] transition-transform bg-[#faf6ec] dark:bg-black dark:border-[#222] dark:text-white"
+                    + (sidebarOpen ? " translate-x-0" : " -translate-x-full")
+                }
+                aria-label="Sidebar"
+            >
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-[#faf6ec] dark:bg-black">
                     <ul className="space-y-2 font-medium">
                         <li>
@@ -103,45 +145,11 @@ const Drawer = () => {
             </aside>
 
             {/* Conteúdo principal */}
-            <div className="p-4 sm:ml-64 bg-[#faf6ec] min-h-screen dark:bg-black">
+            <div className={`p-4 transition-all duration-300 ${contentMargin} bg-[#faf6ec] min-h-screen dark:bg-black`}>
                 <div className="p-4 border-2 border-[#fd6e25] border-dashed rounded-lg dark:border-[#222] mt-14">
-                    <div className="grid grid-cols-3 gap-4 mb-4">
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="flex items-center justify-center h-24 rounded-sm bg-gray-50 dark:bg-gray-800">
-                                <p className="text-2xl text-gray-400 dark:text-gray-500">
-                                    <FiBox className="w-7 h-7" />
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex items-center justify-center h-48 mb-4 rounded-sm bg-gray-50 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">
-                            <FiBox className="w-7 h-7" />
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                                <p className="text-2xl text-gray-400 dark:text-gray-500">
-                                    <FiBox className="w-7 h-7" />
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex items-center justify-center h-48 mb-4 rounded-sm bg-gray-50 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">
-                            <FiBox className="w-7 h-7" />
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="flex items-center justify-center rounded-sm bg-gray-50 h-28 dark:bg-gray-800">
-                                <p className="text-2xl text-gray-400 dark:text-gray-500">
-                                    <FiBox className="w-7 h-7" />
-                                </p>
-                            </div>
-                        ))}
-                    </div>
+                    <Routes>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                    </Routes>
                 </div>
             </div>
         </>
