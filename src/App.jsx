@@ -1,11 +1,13 @@
 import { BrowserRouter } from 'react-router-dom'
 import './App.css'
-import Sidebar from './components/Sidebar'
+import Drawer from './components/Drawer'
+
 
 function App() {
+
   return (
     <BrowserRouter>
-      <Sidebar></Sidebar>
+      <Drawer></Drawer>
     </BrowserRouter>
   )
 }
