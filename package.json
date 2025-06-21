@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "npm run clean:dist && npm run clean:android",
+    "clean:dist": "rimraf dist",
+    "clean:android": "rimraf android",
+    "clean:all": "npm run clean:dist && npm run clean:android && rimraf node_modules"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.0",
@@ -21,6 +25,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.2",
     "react-swipeable": "^7.0.2",
+    "react-touch-events": "^3.0.0",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {
@@ -34,6 +39,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "rimraf": "^6.0.1",
     "vite": "^6.3.5"
   }
 }

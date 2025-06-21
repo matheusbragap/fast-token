@@ -22,51 +22,44 @@ datasource db {
 
 // users table
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  roleId    Int
-  isActive  Boolean  @default(true)
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(100)
+  email    String @db.VarChar(255)
+  password String
+  // document  String?  @unique
+  roles    Role[] // teria o master
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relacionamento: Um usuário pertence a um cargo
-  role Role @relation(fields: [roleId], references: [id])
-
-  @@map("users")
+  @@index([email])
 }
 
 // Tabela de Cargos (Roles) - Criados dinamicamente pelo ADMIN
 model Role {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
   description String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 
   // Relacionamentos
-  users       User[]
-  permissions RolePermission[]
+  users       User[] // Usuários com este cargo
+  permissions RolePermission[] // Permissões vinculadas
 
-  @@map("roles")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // Tabela de Permissões - Lista fixa definida pelo sistema
 model Permission {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique // Ex: "view_dashboard", "manage_products", "manage_roles"
+  id          Int              @id @default(autoincrement())
+  name        String           @unique // Ex: "view_dashboard", "manage_products", "manage_roles"
   description String?
   category    String // Ex: "dashboard", "products", "cashier", "admin"
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  roles       RolePermission[] // Relacionamento: Uma permissão pode estar em vários cargos
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
-  // Relacionamento: Uma permissão pode estar em vários cargos
-  roles RolePermission[]
-
-  @@map("permissions")
+  @@index([category])
 }
 
 // Tabela de junção: Cargos <-> Permissões
