@@ -22,9 +22,10 @@ datasource db {
 
 // users table
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String @db.VarChar(100)
-  email    String @db.VarChar(255)
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar(100)
+  email    String  @db.VarChar(255)
+  phone    String? @db.VarChar(20)
   password String
   // document  String?  @unique
   roles    Role[] // teria o master
